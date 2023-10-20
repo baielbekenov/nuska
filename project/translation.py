@@ -14,7 +14,7 @@
 #     fields = ('name')
     
 # class IzdatelTranslationOptions(TranslationOptions):
-#     fields = ('name', 'adress', 'phone_number')
+#     fields = ('name', 'adress')
     
 
 # class BookTranslationOptions(TranslationOptions):
@@ -23,7 +23,6 @@
 
 
 # translator.register(Soglashenie, SoglashenieTranslationOptions)
-# # translator.register(User, UserTranslationOptions)
 # translator.register(Author, AuthorTranslationOptions)
 # translator.register(Jenre, JenreTranslationOptions)
 # translator.register(Izdatel, IzdatelTranslationOptions)
