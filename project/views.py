@@ -119,3 +119,15 @@ class CommentListView(generics.ListAPIView):
     serializer_class = CommentSerializer
     
     
+# /////////// Detail pages ///////////
+
+
+class BookDetailView(generics.RetrieveAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    
+    def get_object(self):
+        # Опционально: переопределите этот метод, если нужно особое поведение при получении объекта
+        return super().get_object()
+    

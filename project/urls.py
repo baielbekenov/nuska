@@ -15,7 +15,9 @@ urlpatterns = [
     path('customer_list/', views.CustomerListView.as_view()),
     path('book_list/', views.BookListView.as_view()),
     path('postuplenie_list/', views.PostuplenieListView.as_view()),
-    path('comment_list/', views.CommentListView.as_view())
+    path('comment_list/', views.CommentListView.as_view()),
+    
+    path('book_detail/<int:pk>/', views.BookDetailView.as_view()),
     
     
 ]
