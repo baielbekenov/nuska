@@ -79,7 +79,7 @@ class OrderListView(generics.ListAPIView):
     serializer_class = OrderSerializer
     
     
-class UserListView(generics.ListView):
+class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     
