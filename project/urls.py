@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', views.LogoutAPIView.as_view()),
     
     path('orderlist/', views.OrderListView.as_view()),
+    path('user_list/', views.UserListView.as_view()),
     path('sogl_list/', views.SoglashenieListView.as_view()),
     path('author_list/', views.AuthorListView.as_view()),
     path('jenre_list/', views.JenreListView.as_view()),

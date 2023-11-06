@@ -65,7 +65,7 @@ class LoginAPIView(APIView):
         
 class LogoutAPIView(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request):
         request.user.auth_token.delete()
@@ -77,6 +77,11 @@ class LogoutAPIView(APIView):
 class OrderListView(generics.ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    
+    
+class UserListView(generics.ListView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     
 
 class SoglashenieListView(generics.ListAPIView):
