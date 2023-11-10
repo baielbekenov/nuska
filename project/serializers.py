@@ -11,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'password', 'first_name', 'last_name', 'email', 'is_superuser']
+        ref_name = 'ProjectUserSerializer'
 
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
