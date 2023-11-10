@@ -17,18 +17,15 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.static import static
-from django.urls import include, path, re_path
-from .yasg import urlpatterns as doc_urls
+from django.urls import include, path
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('project.urls')),
-    path('api/v1/auth/', include('djoser.urls')),
-    re_path(r'^auth/', include('djoser.urls.authtoken'))
+    path("api/v1/", include("api.router")),
+    path("i18n/", include("django.conf.urls.i18n")),
+    path("docs/", include("api.openapi.urls")),
 ]
-
-urlpatterns += doc_urls
 
 if settings.DEBUG:
      urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

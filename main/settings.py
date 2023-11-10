@@ -22,30 +22,41 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!d^c8i$ebk#!)-03jgk269!s(vs$wju!((y+us^#9mk!7tsv&'j"
+SECRET_KEY = config("SECRET_KEY", default="S#perS3crEt_1122")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
-INSTALLED_APPS = [
+PROJECT_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
-    'drf_yasg',
-    'project',
+]
+
+DJANGO_APPS = [
+    'apps.authentication',
+    'apps.library',
+    'apps.orders',
+]
+
+THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
+    'corsheaders',
+    'drf_spectacular',
+
 ]
+
+INSTALLED_APPS = [*DJANGO_APPS, *THIRD_PARTY_APPS, *PROJECT_APPS]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -125,30 +136,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
-AUTH_USER_MODEL = 'project.User'
+AUTH_USER_MODEL = 'authentication.User'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# for deploy
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': config('NAME'),
-#         'USER': config('USER'),
-#         'PASSWORD': config('PASSWORD'),
-#         'HOST': config('HOST'),
-#         'PORT': config('PORT'),
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# for deploy
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'nuska2',
+        'USER': 'nuska2user',
+        'PASSWORD': 'nuska2_pass',
+        'HOST': '127.0.0.1',
+        'PORT': ''
+    }
+}
 
 
 # Password validation
@@ -183,8 +194,28 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Nuska OpenAPI",
+    "DESCRIPTION": "Описание нашего API в разработке...",
+    'COMPONENT_SPLIT_REQUEST': True,
+    "VERSION": "1.0.0",
+    "SCHEMA_PATH_PREFIX": r"/api/v[0-9]",
+    "SERVE_PERMISSIONS": ("rest_framework.permissions.IsAdminUser",),
+    "SERVE_AUTHENTICATION": ('rest_framework.authentication.SessionAuthentication',
+                             'rest_framework.authentication.BasicAuthentication'),
+    "PREPROCESSING_HOOKS": ("api.openapi.preprocessors.get_urls_preprocessor",),
+    "SWAGGER_UI_SETTINGS": {
+        "docExpansion": "none",  # 'none' | 'list' | 'full'
+    },
+    "ENUM_NAME_OVERRIDES": {
+        "RatingsEnum": "apps.autoanswers.models.RatingChoices",
+        "CountMonthsEnum": "api.billing.serializers.PeriodChoices",
+    },
+    "SERVE_PERMISSIONS": ("rest_framework.permissions.AllowAny",)
+}
 
 
 # Internationalization
@@ -211,16 +242,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
 
-MEDIA_URL = '/media/'
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "apps/static"),)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+MEDIA_ROOT = os.path.join(BASE_DIR, "apps/media")
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

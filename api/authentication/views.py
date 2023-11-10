@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
@@ -6,17 +5,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from project.models import User, Soglashenie, Author, Jenre, Izdatel, Customer, \
-        Book,  Order, Postuplenie, Comment
-from project.serializers import UserSerializer, SoglashenieSerializer, AuthorSerializer, \
-        IzdatelSerializer, JenreSerializer, CustomerSerializer, BookSerializer, OrderSerializer, \
-            PostuplenieSerializer, CommentSerializer
+from apps.authentication.models import User, Soglashenie
+from api.authentication.serializers import UserSerializer, SoglashenieSerializer
 
-# Create your views here.
-
-
-
-# Register Login Logout
 
 class RegistrationAPIView(APIView):
     permission_classes = [AllowAny]
@@ -70,13 +61,11 @@ class LogoutAPIView(APIView):
     def post(self, request):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
+    
 
-
-
-# ListView
-class OrderListView(generics.ListAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+class SoglashenieListView(generics.ListAPIView):
+    queryset = Soglashenie.objects.all()
+    serializer_class = SoglashenieSerializer
     
     
 class UserListView(generics.ListAPIView):
@@ -85,56 +74,4 @@ class UserListView(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated, IsAdminUser]
     
-
-class SoglashenieListView(generics.ListAPIView):
-    queryset = Soglashenie.objects.all()
-    serializer_class = SoglashenieSerializer
-    
-
-class AuthorListView(generics.ListAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-    
-
-class JenreListView(generics.ListAPIView):
-    queryset = Jenre.objects.all()
-    serializer_class = JenreSerializer
-    
-
-class IzdatelListView(generics.ListAPIView):
-    queryset = Izdatel.objects.all()
-    serializer_class = IzdatelSerializer
-    
-    
-class CustomerListView(generics.ListAPIView):
-    queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
-    
-    
-class BookListView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    
-    
-class PostuplenieListView(generics.ListAPIView):
-    queryset = Postuplenie.objects.all()
-    serializer_class = PostuplenieSerializer
-    
-
-class CommentListView(generics.ListAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    
-    
-# /////////// Detail pages ///////////
-
-
-class BookDetailView(generics.RetrieveAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-    
-    def get_object(self):
-        # Опционально: переопределите этот метод, если нужно особое поведение при получении объекта
-        return super().get_object()
     
