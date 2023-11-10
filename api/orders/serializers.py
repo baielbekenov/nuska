@@ -12,3 +12,5 @@ class PostuplenieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Postuplenie
         fields = '__all__'
+        
+        
