@@ -21,6 +21,7 @@ class JenreSerializer(serializers.ModelSerializer):
         
 
 class BookSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Book
         fields = '__all__'
@@ -30,3 +31,14 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+        
+
+class BookDetailSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Book
+        fields = ['id','name', 'author', 'jenre', 'description', 'avatar',
+                  'short_book_file', 'book_file', 'book_file', 
+                  'izdatel', 'year_izdat', 'amount_pages', 'rating',
+                  'cover_image', 'comments']

@@ -36,29 +36,29 @@ class Book(models.Model):
                                verbose_name='author')
     jenre = models.ManyToManyField(Jenre, related_name='book_jenre', verbose_name='jenre')
     description = models.TextField(verbose_name='text')
-    avatar = models.ImageField(upload_to='books_avatar/')
-    short_book_file = models.FileField(upload_to='books/')
-    book_file = models.FileField(upload_to='books/', verbose_name='book')
+    avatar = models.ImageField(upload_to='books_avatar/', blank=True, null=True)
+    short_book_file = models.FileField(upload_to='books/', blank=True, null=True)
+    book_file = models.FileField(upload_to='books/', verbose_name='book', blank=True, null=True)
     izdatel = models.ForeignKey(Izdatel, on_delete=models.SET_NULL,  blank=True, null=True, related_name='book_izdatel',
                                 verbose_name='izdatel')
     year_izdat = models.DateField(verbose_name='year-izdat')
     amount_pages = models.IntegerField(validators=[MaxValueValidator(9999)], verbose_name='amount_pages')
     rating = models.FloatField(default=0, verbose_name='rating')
-    cover_image = models.ImageField(upload_to='book_covers/')
+    cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)
     
     def __str__(self):
         return self.name
     
 
 class Comment(models.Model):
-    id_book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='comment_book',
-                                verbose_name='id_book')
-    id_customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment_customer',
-                                    verbose_name='id_customer')
+    book_id = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='comments',
+                                verbose_name='book_id')
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment_user',
+                                    verbose_name='user_id', blank=True, null=True)
     comment = models.TextField(verbose_name='text')
     date = models.DateField(verbose_name='date', auto_now_add=True)
     
     def __str__(self):
-        return self.id
+        return self.comment
     
     

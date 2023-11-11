@@ -5,8 +5,10 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from apps.authentication.models import User, Soglashenie
+from django.contrib.auth import get_user_model
+from apps.authentication.models import Soglashenie
 from api.authentication.serializers import UserSerializer, SoglashenieSerializer
+User = get_user_model()
 
 
 class RegistrationAPIView(APIView):
