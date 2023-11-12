@@ -30,7 +30,7 @@ class Book(models.Model):
     avatar = models.ImageField(upload_to='books_avatar/', blank=True, null=True)
     short_book_file = models.FileField(upload_to='books/', blank=True, null=True)
     book_file = models.FileField(upload_to='books/', verbose_name='book', blank=True, null=True)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateField(default='2022-09-09')
     amount_pages = models.IntegerField(validators=[MaxValueValidator(9999)], verbose_name='amount_pages')
     rating = models.FloatField(default=0, verbose_name='rating')
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)
