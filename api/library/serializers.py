@@ -1,16 +1,10 @@
 from rest_framework import serializers
-from apps.library.models import Author, Izdatel, Jenre, Book, Comment
+from apps.library.models import Author, Jenre, Book, Comment
 
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = '__all__'
-        
-        
-class IzdatelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Izdatel
         fields = '__all__'
         
         
@@ -26,6 +20,14 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = '__all__'
         
+
+class BookListSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Book
+        fields = ['id', 'name', 'author', 'created_at', 'cover_image', 'jenre']
+        
+        
         
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,5 +42,5 @@ class BookDetailSerializer(serializers.ModelSerializer):
         model = Book
         fields = ['id','name', 'author', 'jenre', 'description', 'avatar',
                   'short_book_file', 'book_file', 'book_file', 
-                  'izdatel', 'year_izdat', 'amount_pages', 'rating',
+                  'amount_pages', 'created_at', 'rating',
                   'cover_image', 'comments']

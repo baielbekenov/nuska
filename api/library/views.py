@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status, generics
 from api.library.pagination import CommentPagination
-from apps.library.models import Author, Jenre, Izdatel, Book, Comment
-from api.library.serializers import AuthorSerializer, JenreSerializer, IzdatelSerializer, \
+from apps.library.models import Author, Jenre, Book, Comment
+from api.library.serializers import AuthorSerializer, BookListSerializer, JenreSerializer, \
     BookSerializer, CommentSerializer, BookDetailSerializer
     
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -42,15 +42,10 @@ class JenreListView(generics.ListAPIView):
     queryset = Jenre.objects.all()
     serializer_class = JenreSerializer
     
-
-class IzdatelListView(generics.ListAPIView):
-    queryset = Izdatel.objects.all()
-    serializer_class = IzdatelSerializer
-    
     
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    serializer_class = BookListSerializer
     permission_classes = (AllowAny,)
     
 

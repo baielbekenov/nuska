@@ -21,15 +21,6 @@ class Jenre(models.Model):
         return self.name
     
 
-class Izdatel(models.Model):
-    name = models.CharField(max_length=80, verbose_name='name')
-    adress = models.CharField(max_length=200, verbose_name='adress', blank=True, null=True)
-    phone_number = PhoneNumberField(null=False, blank=False, unique=True)
-    
-    def __str__(self):
-        return self.name
-
-
 class Book(models.Model):         
     name = models.CharField(max_length=100, verbose_name='name')
     author = models.ForeignKey(Author, on_delete=models.SET_NULL, blank=True, null=True, related_name='book_author',
@@ -39,9 +30,7 @@ class Book(models.Model):
     avatar = models.ImageField(upload_to='books_avatar/', blank=True, null=True)
     short_book_file = models.FileField(upload_to='books/', blank=True, null=True)
     book_file = models.FileField(upload_to='books/', verbose_name='book', blank=True, null=True)
-    izdatel = models.ForeignKey(Izdatel, on_delete=models.SET_NULL,  blank=True, null=True, related_name='book_izdatel',
-                                verbose_name='izdatel')
-    year_izdat = models.DateField(verbose_name='year-izdat')
+    created_at = models.DateField(auto_now_add=True)
     amount_pages = models.IntegerField(validators=[MaxValueValidator(9999)], verbose_name='amount_pages')
     rating = models.FloatField(default=0, verbose_name='rating')
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)
