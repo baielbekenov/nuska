@@ -62,7 +62,7 @@ class RegistrationAPIView(APIView):
         
         if User.objects.filter(email=email).exists():
             return Response(
-                {"error": "Пользователь с таким email уже существует."}, 
+                {"error": "Бул электрондук почтасы бар колдонуучу мурунтан эле бар."}, 
                 status=status.HTTP_400_BAD_REQUEST
         )
 
