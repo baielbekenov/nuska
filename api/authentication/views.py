@@ -59,8 +59,15 @@ class RegistrationAPIView(APIView):
         email = serializer.validated_data.get("email")
 
         code = "".join([str(random.randint(1, 9)) for _ in range(0, 6)])
+        
+        if User.objects.filter(email=email).exists():
+            return Response(
+                {"error": "Пользователь с таким email уже существует."}, 
+                status=status.HTTP_400_BAD_REQUEST
+        )
 
         user = User.objects.filter(email=email)
+        
 
         if user.exists():
             user = user.first()
