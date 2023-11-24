@@ -89,8 +89,9 @@ class RegistrationAPIView(APIView):
         das = MyTokenObtainPairSerializer()
         tokens = das.get_token(user=user)
         data = {
-            'user': UserGetSerializer(user).data,
-            "tokens": tokens
+            "user": UserGetSerializer(user).data,
+            "tokens": tokens,
+            "message": "Регистрация пользователя прошла успешно."
         }
         return Response(data, status=status.HTTP_200_OK)
 

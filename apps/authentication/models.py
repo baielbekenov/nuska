@@ -51,6 +51,11 @@ class User(AbstractUser):
     def __str__(self):
         return str(self.id)
     
+    class Meta:
+        
+        verbose_name = 'Колдонуучу'
+        verbose_name_plural = 'Колдонуучулар'
+    
     
 class Soglashenie(models.Model):
     name = models.CharField(max_length=150)
@@ -59,3 +64,8 @@ class Soglashenie(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        
+        verbose_name = 'Келишим'
+        verbose_name_plural = 'Келишимдер'

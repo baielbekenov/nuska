@@ -15,10 +15,13 @@ class Order(models.Model):
     totall_summ = models.DecimalField(decimal_places=2, max_digits=8)
     status_payment = models.BooleanField()
     
-    
-    
     def __str__(self):
         return self.id_user
+    
+    class Meta:
+        
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказдар'
     
 
 class Postuplenie(models.Model):
@@ -29,3 +32,8 @@ class Postuplenie(models.Model):
     
     def __str__(self):
         return self.id_book
+    
+    class Meta:
+        
+        verbose_name = 'Келгендер'
+        verbose_name_plural = 'Келгендер'
