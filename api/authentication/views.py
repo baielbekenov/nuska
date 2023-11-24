@@ -63,7 +63,7 @@ class RegistrationAPIView(APIView):
         if User.objects.filter(email=email).exists():
             return Response(
                 {"error": "Бул электрондук почтасы бар колдонуучу мурунтан эле бар."}, 
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_409_CONFLICT
         )
 
         user = User.objects.filter(email=email)
