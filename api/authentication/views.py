@@ -121,8 +121,9 @@ class SoglashenieListView(generics.ListAPIView):
     
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
-    # serializer_class = UserSerializer
-    authentication_classes = [TokenAuthentication]
+    serializer_class = UserGetSerializer
+    permission_classes = [AllowAny]
+    # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated, IsAdminUser]
     
     
