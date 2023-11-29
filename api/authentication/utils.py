@@ -4,8 +4,8 @@ from django.core.mail import EmailMessage
 def send_email_code(email, code):
     message = EmailMessage(
         to=[email],
-        subject='Код для регистрации на сайте nuska.kg',
-        body=f'Ваш код для регистрации {code}.\nНикому не говорите ваш код',
+        subject='nuska.kg сайтында каттоо коду',
+        body=f'Каттоо кодуңуз — {code}.\nКодуңузду эч кимге айтпаңыз',
     )
 
     message.send()
@@ -15,8 +15,8 @@ def send_email_code(email, code):
 def send_email_code_for_reset(email, code):
     message = EmailMessage(
         to=[email],
-        subject='Код для сброса на сайте nuska.kg',
-        body=f'Ваш код для сброса {code}.\nНикому не говорите ваш код',
+        subject='nuska.kg сайтында кодду калыбына келтирүү',
+        body=f'Баштапкы абалга келтирүү кодуңуз — {code}.\nКодуңузду эч кимге айтпаңыз',
     )
 
     message.send()

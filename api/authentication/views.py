@@ -13,7 +13,8 @@ from django.utils.encoding import force_str as force_text
 from django.utils.encoding import force_bytes
 from rest_framework.throttling import ScopedRateThrottle
 from apps.authentication.models import Soglashenie
-from api.authentication.serializers import CustomTokenObtainSerializer, UserGetSerializer, UserRegisterSerializer, SoglashenieSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from api.authentication.serializers import CustomTokenObtainSerializer, LogoutSerializer, UserGetSerializer, UserRegisterSerializer, SoglashenieSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
@@ -96,31 +97,19 @@ class RegistrationAPIView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
         
-        
-class LoginAPIView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
-        user = authenticate(username=username, password=password)
-
-        if user is None:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-        token, created = Token.objects.get_or_create(user=user)
-
-        return Response({'token': token.key, 'is_superuser': user.is_superuser},
-                        status=status.HTTP_200_OK)
-        
-        
 class LogoutAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    serializer_class = LogoutSerializer
+
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
-        request.user.auth_token.delete()
-        return Response(status=status.HTTP_200_OK)
-    
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
 
 class SoglashenieListView(generics.ListAPIView):
     queryset = Soglashenie.objects.all()
