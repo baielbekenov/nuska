@@ -10,6 +10,10 @@ urlpatterns = [
     path('user_list/', views.UserListView.as_view()),
     path('sogl_list/', views.SoglashenieListView.as_view()),
     
+    path('users/reset/password/', views.ResetPasswordView.as_view()),
+    path('users/reset/code/confirm/', views.CodeResetPasswordView.as_view()),
+    path('users/reset/password/confirm/', views.ResetPasswordConfirmView.as_view()),
+    
     
     
 ]

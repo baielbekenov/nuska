@@ -83,3 +83,33 @@ class SoglashenieSerializer(serializers.ModelSerializer):
         model = Soglashenie
         fields = '__all__'
         
+        
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    
+    def validate_email(self, value):
+        try:
+            User.objects.get(email=value)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("Почта жок!")
+        return value
+    
+    
+class CodeResetPasswordSerializer(serializers.Serializer):
+    code = serializers.IntegerField()
+    email = serializers.EmailField()
+    
+    def validate_code(self, value):
+        if len(str(value)) != 6 or value < 0:
+            raise serializers.ValidationError('Код алты сандан турушу керек!')
+        return value
+    
+
+class ResetPasswordConfirmSerializer(serializers.Serializer):
+    new_password = serializers.CharField(required=True)
+    
+    def validate_new_password(self, new_password):
+        if not validate_password(new_password):
+            return new_password
+
+        
