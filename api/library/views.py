@@ -48,6 +48,13 @@ class BookListView(generics.ListAPIView):
     serializer_class = BookListSerializer
     permission_classes = (AllowAny,)
     
+    def get_queryset(self):
+        queryset = Book.objects.all()
+        genre = self.request.query_params.get('genre', None)
+        if genre is not None:
+            queryset = queryset.filter(genre__name=genre)
+        return queryset
+    
 
 class CommentListView(generics.ListAPIView):
     queryset = Comment.objects.all()
