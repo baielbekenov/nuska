@@ -47,13 +47,7 @@ class Book(models.Model):
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True, verbose_name='постер')
     
     def __str__(self):
-        return self.name
-    
-    def __str__(self):
-        return self.author
-    
-    def __str__(self):
-        return self.jenre
+        return self.name + ' ' + self.author
     
     class Meta:
         
