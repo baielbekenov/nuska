@@ -6,5 +6,5 @@ admin.site.register(Author)
 admin.site.register(Jenre)
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author') 
+    list_display = ('name', 'author', 'jenre') 
 admin.site.register(Comment)
