@@ -4,11 +4,10 @@ from rest_framework import status, generics
 from api.library.pagination import CommentPagination
 from apps.library.models import Author, Jenre, Book, Comment
 from api.library.serializers import AuthorSerializer, BookListSerializer, JenreSerializer, \
-    BookSerializer, CommentSerializer, BookDetailSerializer
+    BookSerializer, CommentSerializer, BookDetailSerializer, BestSellingBookSerializer, NewBookSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
     
 from rest_framework.permissions import AllowAny, IsAuthenticated
-
 
 
 class CommentListAPIView(generics.ListCreateAPIView):
@@ -68,6 +67,18 @@ class BookDetailView(generics.RetrieveAPIView):
     serializer_class = BookDetailSerializer
     permission_classes = (IsAuthenticated,)
     authentication_class = [JWTAuthentication]
+
+
+class BestSellingBooksView(generics.ListAPIView):
+    queryset = Book.objects.all().order_by('-sales_count')
+    serializer_class = BestSellingBookSerializer
+    permission_classes = (AllowAny,)
+
+
+class NewBooksView(generics.ListAPIView):
+    queryset = Book.objects.all().order_by('-created_at')
+    serializer_class = NewBookSerializer
+    permission_classes = (AllowAny,)
     
     
 

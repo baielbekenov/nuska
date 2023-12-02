@@ -46,7 +46,7 @@ class Book(models.Model):
     book_file = models.FileField(upload_to='books/', verbose_name='китеп файлы', blank=True, null=True)
     created_at = models.DateField(auto_now_add=True, verbose_name='кошулган куну')
     amount_pages = models.IntegerField(validators=[MaxValueValidator(9999)], verbose_name='барактардын саны')
-    rating = models.FloatField(default=0, verbose_name='рейтинги')
+    sales_count = models.IntegerField(default=0, verbose_name='Сатылгандардын саны')
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True, verbose_name='постер')
     active = models.BooleanField(default=True)
     

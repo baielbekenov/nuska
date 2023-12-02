@@ -27,8 +27,7 @@ class BookListSerializer(serializers.ModelSerializer):
         model = Book
         fields = ['id', 'name', 'author', 'created_at', 'cover_image', 'jenre']
         
-        
-        
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -42,5 +41,19 @@ class BookDetailSerializer(serializers.ModelSerializer):
         model = Book
         fields = ['id','name', 'author', 'jenre', 'description', 'avatar',
                   'short_book_file', 'book_file', 'book_file', 
-                  'amount_pages', 'created_at', 'rating',
+                  'amount_pages', 'created_at', 'sales_count',
                   'cover_image', 'comments']
+
+
+class BestSellingBookSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Book
+        fields = ['id', 'name', 'author', 'sales_count', 'jenre', 'cover_image']
+
+
+class NewBookSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Book
+        fields = ['id', 'name', 'author', 'created_at', 'jenre', 'cover_image' ]
