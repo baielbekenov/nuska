@@ -94,7 +94,7 @@ class RegistrationAPIView(APIView):
         data = {
             "user": UserGetSerializer(user).data,
             "tokens": tokens,
-            "message": "Регистрация пользователя прошла успешно."
+            "message": "Колдонуучуну каттоо ийгиликтүү өттү"
         }
         return Response(data, status=status.HTTP_200_OK)
 

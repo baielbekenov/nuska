@@ -11,7 +11,7 @@ User = get_user_model()
 
 class CustomTokenObtainSerializer(TokenObtainPairSerializer):
     default_error_messages = {
-        "no_active_account": _("Неправильный логин или пароль")
+        "no_active_account": _("Туура эмес логин же сырсөз")
     }
 
 

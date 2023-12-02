@@ -5,6 +5,7 @@ from api.library.pagination import CommentPagination
 from apps.library.models import Author, Jenre, Book, Comment
 from api.library.serializers import AuthorSerializer, BookListSerializer, JenreSerializer, \
     BookSerializer, CommentSerializer, BookDetailSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
     
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -49,10 +50,11 @@ class BookListView(generics.ListAPIView):
     permission_classes = (AllowAny,)
     
     def get_queryset(self):
-        queryset = Book.objects.all()
-        genre = self.request.query_params.get('genre', None)
-        if genre is not None:
-            queryset = queryset.filter(genre__name=genre)
+        queryset = Book.objects.filter(active=True)
+        jenre_id = self.request.query_params.get('jenre_id', None)
+
+        if jenre_id is not None:
+            queryset = queryset.filter(jenre__id=jenre_id)
         return queryset
     
 
@@ -64,6 +66,8 @@ class CommentListView(generics.ListAPIView):
 class BookDetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookDetailSerializer
+    permission_classes = (IsAuthenticated,)
+    authentication_class = [JWTAuthentication]
     
     
 
