@@ -16,7 +16,7 @@ from api.authentication.utils import send_email_code_for_reset
 from apps.authentication.models import Soglashenie
 from rest_framework_simplejwt.tokens import RefreshToken
 from api.authentication.serializers import CustomTokenObtainSerializer, LogoutSerializer, UserGetSerializer, \
-    UserRegisterSerializer, SoglashenieSerializer, PasswordResetSerializer, CodeResetPasswordSerializer, ResetPasswordConfirmSerializer
+    UserRegisterSerializer, PasswordResetSerializer, CodeResetPasswordSerializer, ResetPasswordConfirmSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
@@ -111,20 +111,7 @@ class LogoutAPIView(APIView):
         serializer.save()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
 
-class SoglashenieListView(generics.ListAPIView):
-    queryset = Soglashenie.objects.all()
-    serializer_class = SoglashenieSerializer
-    
-    
-class UserListView(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserGetSerializer
-    permission_classes = [AllowAny]
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated, IsAdminUser]
-    
 
 class ResetPasswordView(APIView):
     permission_classes = (AllowAny, )

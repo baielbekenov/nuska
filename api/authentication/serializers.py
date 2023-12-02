@@ -26,7 +26,6 @@ class UserRegisterSerializer(serializers.Serializer):
     class Meta:
         model = User
         fields = ("phone", "password1", 'email', 'first_name', 'last_name', 'agreement_accepted')
-        
 
     def validate_password1(self, password1):
         if not validate_password(password1):
@@ -36,11 +35,6 @@ class UserRegisterSerializer(serializers.Serializer):
     def validate_agreement_accepted(self, value):
         if not value:
             raise serializers.ValidationError("Каттоодон өтүү үчүн келишимдин шарттарын кабыл алышыңыз керек.")
-
-    
-        
-    
-    
 
 
 class UserGetSerializer(serializers.ModelSerializer):
@@ -76,17 +70,11 @@ class LogoutSerializer(serializers.Serializer):
             RefreshToken(self.token).blacklist()
         except TokenError:
             self.fail('bad_token')
-    
 
-class SoglashenieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Soglashenie
-        fields = '__all__'
-        
-        
+
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    
+
     def validate_email(self, value):
         try:
             User.objects.get(email=value)
