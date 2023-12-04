@@ -7,7 +7,7 @@ admin.site.register(Jenre)
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('name', 'author', 'jenre') 
-    search_fields = ('name', 'author__name')
+    search_fields = ('name', )
     
     def jenre(self, obj):
         """Возвращает строку со всеми жанрами книги."""
