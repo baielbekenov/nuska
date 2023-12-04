@@ -83,5 +83,22 @@ class Comment(models.Model):
         
         verbose_name = 'Пикир'
         verbose_name_plural = 'Пикирлер'
+
+
+class FavoriteBook(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_books')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='favorited_by')
+    added_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together =('user', 'book')
+        verbose_name = 'Тандалган китеп'
+        verbose_name_plural = 'Тандалган китептер'
+
+    def __str__(self):
+        return f"{self.user.email} - {self.book.name}"
+
+
+
     
     

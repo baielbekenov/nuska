@@ -16,7 +16,8 @@ from api.authentication.utils import send_email_code_for_reset
 from apps.authentication.models import Soglashenie
 from rest_framework_simplejwt.tokens import RefreshToken
 from api.authentication.serializers import CustomTokenObtainSerializer, LogoutSerializer, UserGetSerializer, \
-    UserRegisterSerializer, PasswordResetSerializer, CodeResetPasswordSerializer, ResetPasswordConfirmSerializer
+    UserRegisterSerializer, PasswordResetSerializer, CodeResetPasswordSerializer, ResetPasswordConfirmSerializer, \
+    UserListSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
@@ -202,6 +203,12 @@ class ResetPasswordConfirmView(APIView):
             return Response({"detail": "Сырсөз ийгиликтүү өзгөртүлдү"}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserListView(generics.ListAPIView):
+    serializer_class = UserListSerializer
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated, )
     
     
                 

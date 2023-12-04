@@ -11,6 +11,9 @@ urlpatterns = [
     path('book_detail/<int:pk>/', views.BookDetailView.as_view()),
     path('bestselling_books/', views.BestSellingBooksView.as_view()),
     path('newbooks/', views.NewBooksView.as_view()),
+
+    path('addfavoritebook/', views.AddFavoriteBookView.as_view()),
+    path('favoritebook-list/', views.ListFavoriteBookView.as_view())
     
     
 ]

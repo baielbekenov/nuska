@@ -100,4 +100,11 @@ class ResetPasswordConfirmSerializer(serializers.Serializer):
         if not validate_password(new_password):
             return new_password
 
+
+class UserListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'email']
+
         

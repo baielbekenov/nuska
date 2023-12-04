@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status, generics
+from rest_framework.views import APIView
 from api.library.pagination import CommentPagination
-from apps.library.models import Author, Jenre, Book, Comment
+from apps.library.models import Author, Jenre, Book, Comment, FavoriteBook
 from api.library.serializers import AuthorSerializer, BookListSerializer, JenreSerializer, \
-    BookSerializer, CommentSerializer, BookDetailSerializer, BestSellingBookSerializer, NewBookSerializer
+    BookSerializer, CommentSerializer, BookDetailSerializer, BestSellingBookSerializer, NewBookSerializer, \
+    AddFavoriteBookSerializer, ListFavoriteBookSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
     
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -79,6 +81,38 @@ class NewBooksView(generics.ListAPIView):
     queryset = Book.objects.all().order_by('-created_at')
     serializer_class = NewBookSerializer
     permission_classes = (AllowAny,)
+
+
+class AddFavoriteBookView(APIView):
+    serializer_class = AddFavoriteBookSerializer
+    queryset = FavoriteBook.objects.all()
+    permission_class = (IsAuthenticated, )
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            # Получаем текущего аутентифицированного пользователя
+            current_user = request.user
+
+            # Проверяем, что пользователь в данных сериализатора соответствует текущему пользователю
+            if current_user.id != serializer.validated_data['user'].id:
+                return Response({'error': "Туура эмес колдонучу"}, status=status.HTTP_403_FORBIDDEN)
+
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListFavoriteBookView(generics.ListAPIView):
+    serializer_class = ListFavoriteBookSerializer
+    permission_class = (AllowAny,)
+
+    def get_queryset(self):
+        user = self.request.user
+        return FavoriteBook.objects.filter(user=user)
+
+
+
     
     
 
