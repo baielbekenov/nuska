@@ -49,7 +49,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return str(self.id)
+        return self.email
     
     class Meta:
         

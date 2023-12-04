@@ -11,7 +11,7 @@ User = get_user_model()
 
 class CustomTokenObtainSerializer(TokenObtainPairSerializer):
     default_error_messages = {
-        "no_active_account": _("Неправильный логин или пароль")
+        "no_active_account": _("Туура эмес логин же сырсөз")
     }
 
 
@@ -26,7 +26,6 @@ class UserRegisterSerializer(serializers.Serializer):
     class Meta:
         model = User
         fields = ("phone", "password1", 'email', 'first_name', 'last_name', 'agreement_accepted')
-        
 
     def validate_password1(self, password1):
         if not validate_password(password1):
@@ -36,11 +35,6 @@ class UserRegisterSerializer(serializers.Serializer):
     def validate_agreement_accepted(self, value):
         if not value:
             raise serializers.ValidationError("Каттоодон өтүү үчүн келишимдин шарттарын кабыл алышыңыз керек.")
-
-    
-        
-    
-    
 
 
 class UserGetSerializer(serializers.ModelSerializer):
@@ -76,17 +70,11 @@ class LogoutSerializer(serializers.Serializer):
             RefreshToken(self.token).blacklist()
         except TokenError:
             self.fail('bad_token')
-    
 
-class SoglashenieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Soglashenie
-        fields = '__all__'
-        
-        
+
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    
+
     def validate_email(self, value):
         try:
             User.objects.get(email=value)
@@ -111,5 +99,12 @@ class ResetPasswordConfirmSerializer(serializers.Serializer):
     def validate_new_password(self, new_password):
         if not validate_password(new_password):
             return new_password
+
+
+class UserListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'email']
 
         
