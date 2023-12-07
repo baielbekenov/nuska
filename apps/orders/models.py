@@ -5,7 +5,6 @@ from apps.library.models import Book
 # Create your models here.
 
 
-
 class Order(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.SET_NULL,  blank=True, null=True, verbose_name='id_user')
     id_book = models.ForeignKey(Book, on_delete=models.SET_NULL,  blank=True, null=True, verbose_name='id_book')

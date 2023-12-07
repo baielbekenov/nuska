@@ -42,6 +42,7 @@ class User(AbstractUser):
     )
     last_sms_date = models.DateTimeField(null=True)
     avatar = models.ImageField(blank=True, null=True, upload_to="avatars/%Y/%m")
+    is_confirm = models.BooleanField(default=False, blank=True)
 
     objects = UserManager()
 
