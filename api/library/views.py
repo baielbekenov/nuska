@@ -16,8 +16,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 class CommentListAPIView(generics.ListCreateAPIView):
     queryset = Comment.objects.all().order_by('-id')
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
     pagination_class = CommentPagination
+    
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsAuthenticated()]
+        return [AllowAny()]
 
     def get_queryset(self):
         book_id = self.kwargs['book_id']
