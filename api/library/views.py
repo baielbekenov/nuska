@@ -8,11 +8,8 @@ from api.library.serializers import AuthorSerializer, BookListSerializer, JenreS
     BookSerializer, CommentSerializer, BookDetailSerializer, BestSellingBookSerializer, NewBookSerializer, \
     AddFavoriteBookSerializer, ListFavoriteBookSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
-<<<<<<< HEAD
-from drf_spectacular.utils import extend_schema
-=======
 from drf_spectacular.utils import extend_schema, extend_schema_view
->>>>>>> 9b8f04a8ed45f8764fcf6abba4644b939e170b0c
+
     
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -58,14 +55,8 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookListSerializer
     permission_classes = (AllowAny,)
-<<<<<<< HEAD
-
-    @extend_schema(summary="Test description of retrieve method")
-=======
-    
     
     @extend_schema(summary="?jenre_id=13")
->>>>>>> 9b8f04a8ed45f8764fcf6abba4644b939e170b0c
     def get_queryset(self):
         queryset = Book.objects.filter(active=True)
         jenre_id = self.request.query_params.get('jenre_id', None)

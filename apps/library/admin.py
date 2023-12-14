@@ -1,6 +1,6 @@
 from django.contrib import admin
 from apps.library.models import Author, Jenre, Book, Comment
-from apps.library.modelfilter import  JenreFilter
+from apps.library.modelfilter import JenreFilter
 from import_export.admin import ImportExportModelAdmin
 
 admin.site.register(Author)
