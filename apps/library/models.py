@@ -64,7 +64,6 @@ class Book(models.Model):
         # Any other meta options you want to include
         # For example, if you want to make sure that no two books have the same name and author
         unique_together = ('name', 'author')
-        
     
 
 class Comment(models.Model):

@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from django.contrib.auth import password_validation
-from django.conf import settings
 
 User = get_user_model()
 
@@ -19,6 +18,14 @@ class UserAccountSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'phone', 'email', 'first_name', 'last_name', 'patronymic',
                   'avatar', 'is_confirm']
+
+
+class ConfirmUserEmailSerializer(serializers.Serializer):
+    is_confirm = serializers.BooleanField(required=True)
+
+
+class ActivateUserEmailSerializer(serializers.Serializer):
+    code = serializers.IntegerField(required=True)
 
 
 class ChangePasswordSerializer(serializers.Serializer):

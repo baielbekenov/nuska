@@ -30,9 +30,11 @@ class BookListSerializer(serializers.ModelSerializer):
         
 
 class CommentSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user_id.phone', read_only=True)
+
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ['user_name', 'date', 'comment']
         
 
 class BookDetailSerializer(serializers.ModelSerializer):

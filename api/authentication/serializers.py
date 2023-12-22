@@ -21,20 +21,14 @@ class UserRegisterSerializer(serializers.Serializer):
     last_name = serializers.CharField(max_length=50)
     password1 = serializers.CharField()
     email = serializers.EmailField()
-    agreement_accepted = serializers.BooleanField(default=False)
     
     class Meta:
         model = User
-        fields = ("phone", "password1", 'email', 'first_name', 'last_name', 'agreement_accepted')
+        fields = ("phone", "password1", 'email', 'first_name', 'last_name')
 
     def validate_password1(self, password1):
         if not validate_password(password1):
             return password1
-        
-    
-    def validate_agreement_accepted(self, value):
-        if not value:
-            raise serializers.ValidationError("Каттоодон өтүү үчүн келишимдин шарттарын кабыл алышыңыз керек.")
 
 
 class UserGetSerializer(serializers.ModelSerializer):
