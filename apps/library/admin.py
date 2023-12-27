@@ -20,5 +20,7 @@ class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     def display_author(self, obj):
         return ', '.join([author.last_name for author in obj.author.all()])
 
+    display_author.short_description = 'Авторлор'
+
     
 admin.site.register(Comment)
