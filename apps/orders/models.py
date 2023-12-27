@@ -30,9 +30,24 @@ class Postuplenie(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=8)
     
     def __str__(self):
-        return self.id_book
+        return str(self.id_book)
     
     class Meta:
         
         verbose_name = 'Келгендер'
         verbose_name_plural = 'Келгендер'
+
+
+class PublicOffer(models.Model):
+    title = models.CharField(max_length=200, verbose_name='Аталыш')
+    content = models.TextField(verbose_name='Мазмуну')
+    is_active = models.BooleanField(default=True, verbose_name='Жанык')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Публичное предложение'
+        verbose_name_plural = 'Публичные предложения'
+
+

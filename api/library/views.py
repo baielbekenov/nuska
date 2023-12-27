@@ -4,11 +4,10 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from api.library.pagination import CommentPagination
 from apps.library.models import Author, Jenre, Book, Comment, FavoriteBook
-from api.library.serializers import AuthorSerializer, BookListSerializer, JenreSerializer, \
-    BookSerializer, CommentSerializer, BookDetailSerializer, BestSellingBookSerializer, NewBookSerializer, \
+from api.library.serializers import AuthorSerializer, JenreSerializer, \
+    BookSerializer, CommentSerializer, BookDetailSerializer, \
     AddFavoriteBookSerializer, ListFavoriteBookSerializer
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema
 
     
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -53,7 +52,7 @@ class JenreListView(generics.ListAPIView):
         
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookListSerializer
+    serializer_class = BookSerializer
     permission_classes = (AllowAny,)
     
     @extend_schema(summary="?jenre_id=13")
@@ -79,13 +78,13 @@ class BookDetailView(generics.RetrieveAPIView):
 
 class BestSellingBooksView(generics.ListAPIView):
     queryset = Book.objects.all().order_by('-sales_count')
-    serializer_class = BestSellingBookSerializer
+    serializer_class = BookSerializer
     permission_classes = (AllowAny,)
 
 
 class NewBooksView(generics.ListAPIView):
     queryset = Book.objects.all().order_by('-created_at')
-    serializer_class = NewBookSerializer
+    serializer_class = BookSerializer
     permission_classes = (AllowAny,)
 
 
@@ -97,14 +96,10 @@ class AddFavoriteBookView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            # Получаем текущего аутентифицированного пользователя
-            current_user = request.user
+            user = request.user
+            favourite_book = serializer.save(user=user)
 
-            # Проверяем, что пользователь в данных сериализатора соответствует текущему пользователю
-            if current_user.id != serializer.validated_data['user'].id:
-                return Response({'error': "Туура эмес колдонучу"}, status=status.HTTP_403_FORBIDDEN)
-
-            serializer.save()
+            favourite_book.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -8,7 +8,7 @@ admin.site.register(Jenre)
 
 @admin.register(Book)
 class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('name', 'author', 'display_jenres')
+    list_display = ('name', 'display_author', 'display_jenres')
     search_fields = ('name', )
     list_filter = (JenreFilter,)
 
@@ -16,6 +16,9 @@ class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         """Возвращает строку со всеми жанрами книги."""
         return ', '.join([genre.name for genre in obj.jenre.all()])
     display_jenres.short_description = 'Жанрлар'
+
+    def display_author(self, obj):
+        return ', '.join([author.last_name for author in obj.author.all()])
 
     
 admin.site.register(Comment)

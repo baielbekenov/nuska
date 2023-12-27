@@ -1,6 +1,7 @@
 from rest_framework import serializers
+
+from api.orders.serializers import PostuplenieSerializer
 from apps.library.models import Author, Jenre, Book, Comment, FavoriteBook
-from apps.authentication.models import User
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -16,18 +17,14 @@ class JenreSerializer(serializers.ModelSerializer):
         
 
 class BookSerializer(serializers.ModelSerializer):
+    prices = PostuplenieSerializer(many=True, read_only=True, source='postu_book')
+    author = AuthorSerializer(many=True, read_only=True)
+    jenre = JenreSerializer(many=True, read_only=True)
     
     class Meta:
         model = Book
-        fields = '__all__'
-        
+        fields = ['id', 'name', 'author', 'created_at', 'cover_image', 'jenre', 'prices', 'sales_count']
 
-class BookListSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Book
-        fields = ['id', 'name', 'author', 'created_at', 'cover_image', 'jenre']
-        
 
 class CommentSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user_id.phone', read_only=True)
@@ -48,22 +45,7 @@ class BookDetailSerializer(serializers.ModelSerializer):
                   'cover_image', 'comments']
 
 
-class BestSellingBookSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Book
-        fields = ['id', 'name', 'author', 'sales_count', 'jenre', 'cover_image']
-
-
-class NewBookSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Book
-        fields = ['id', 'name', 'author', 'created_at', 'jenre', 'cover_image' ]
-
-
 class AddFavoriteBookSerializer(serializers.Serializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all())
 
     class Meta:
@@ -75,9 +57,9 @@ class AddFavoriteBookSerializer(serializers.Serializer):
         return favorite_book
 
 
-class ListFavoriteBookSerializer(serializers.Serializer):
+class ListFavoriteBookSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
 
     class Meta:
         model = FavoriteBook
-        fields = ['id', 'book']
+        fields = ['id', 'book', 'added_on']

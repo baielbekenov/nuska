@@ -37,8 +37,7 @@ class Jenre(models.Model):
 
 class Book(models.Model):         
     name = models.CharField(max_length=100, verbose_name='китептин аталышы')
-    author = models.ForeignKey(Author, on_delete=models.SET_NULL, blank=True, null=True, related_name='book_author',
-                               verbose_name='автору')
+    author = models.ManyToManyField(Author, related_name='book_author', verbose_name='автору')
     jenre = models.ManyToManyField(Jenre, related_name='book_jenre', verbose_name='жанр')
     description = models.TextField(verbose_name='мазмуну')
     avatar = models.ImageField(upload_to='books_avatar/', blank=True, null=True, verbose_name='аватар')
@@ -63,7 +62,6 @@ class Book(models.Model):
 
         # Any other meta options you want to include
         # For example, if you want to make sure that no two books have the same name and author
-        unique_together = ('name', 'author')
     
 
 class Comment(models.Model):
@@ -87,7 +85,7 @@ class Comment(models.Model):
 class FavoriteBook(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_books')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='favorited_by')
-    added_on = models.DateTimeField(auto_now_add=True)
+    added_on = models.DateField(auto_now_add=True)
 
     class Meta:
         unique_together =('user', 'book')
