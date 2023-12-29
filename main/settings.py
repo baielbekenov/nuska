@@ -209,6 +209,7 @@ if DEBUG:
 
 
 SPECTACULAR_SETTINGS = {
+    "openapi": "3.0.0",
     "TITLE": "Nuska OpenAPI",
     "DESCRIPTION": "Описание нашего API в разработке...",
     'COMPONENT_SPLIT_REQUEST': True,
@@ -220,7 +221,6 @@ SPECTACULAR_SETTINGS = {
     "PREPROCESSING_HOOKS": ("api.openapi.preprocessors.get_urls_preprocessor",),
     "SWAGGER_UI_SETTINGS": {
         "docExpansion": "none",  # 'none' | 'list' | 'full'
-        "swagger": "2.0"
     },
     "ENUM_NAME_OVERRIDES": {
         "RatingsEnum": "apps.autoanswers.models.RatingChoices",
