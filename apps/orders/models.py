@@ -8,14 +8,13 @@ from apps.library.models import Book
 class Order(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.SET_NULL,  blank=True, null=True, verbose_name='id_user')
     id_book = models.ForeignKey(Book, on_delete=models.SET_NULL,  blank=True, null=True, verbose_name='id_book')
-    
-    order_date = models.DateField(verbose_name='date of order')
-    order_status = models.BooleanField(verbose_name='status of order')
-    totall_summ = models.DecimalField(decimal_places=2, max_digits=8)
-    status_payment = models.BooleanField()
+    order_date = models.DateField(verbose_name='date of order', auto_now_add=True)
+    order_status = models.BooleanField(verbose_name='status of order', default=False)
+    totall_summ = models.DecimalField(decimal_places=2, max_digits=8, null=True, blank=True)
+    status_payment = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.id_user
+        return f"{self.id_user} -- {self.id_book}"
     
     class Meta:
         
@@ -26,8 +25,8 @@ class Order(models.Model):
 class Postuplenie(models.Model):
     id_book = models.ForeignKey(Book, on_delete=models.SET_NULL,  blank=True, null=True, related_name='postu_book')
     date = models.DateField(auto_now_add=True)
-    cost = models.DecimalField(decimal_places=2, max_digits=8)
-    price = models.DecimalField(decimal_places=2, max_digits=8)
+    cost = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+    price = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     
     def __str__(self):
         return str(self.id_book)

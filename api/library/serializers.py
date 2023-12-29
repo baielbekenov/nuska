@@ -40,8 +40,8 @@ class BookDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ['id','name', 'author', 'jenre', 'description', 'avatar',
-                  'short_book_file', 'book_file', 'book_file', 
-                  'amount_pages', 'created_at', 'sales_count',
+                  'short_book_file', 'book_file', 'amount_pages',
+                  'created_at', 'sales_count',
                   'cover_image', 'comments']
 
 

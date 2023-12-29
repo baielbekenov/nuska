@@ -2,10 +2,20 @@ from rest_framework import serializers
 from apps.orders.models import Order, Postuplenie, PublicOffer
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id_book', ]
+
+
+class BookSerializer
+
+
+class OrderListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = ['id', 'id_user', 'id_book']
 
 
 class PostuplenieSerializer(serializers.ModelSerializer):

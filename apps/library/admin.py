@@ -18,7 +18,7 @@ class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     display_jenres.short_description = 'Жанрлар'
 
     def display_author(self, obj):
-        return ', '.join([f"{author.last_name}, {author.first_name}" for author in obj.author.all()])
+        return ', '.join([f"{author.first_name} {author.last_name}" for author in obj.author.all()])
 
     display_author.short_description = 'Авторлор'
 

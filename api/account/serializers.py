@@ -16,8 +16,8 @@ class UserAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'phone', 'email', 'first_name', 'last_name', 'patronymic',
-                  'avatar', 'is_confirm']
+        fields = ['id', 'phone', 'first_name', 'last_name', 'patronymic',
+                  'avatar']
 
 
 class ConfirmUserEmailSerializer(serializers.Serializer):

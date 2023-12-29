@@ -1,7 +1,7 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from django.contrib.auth import get_user_model
 from django.utils.http import urlsafe_base64_encode
 from api.account.serializers import UserAccountSerializer, ChangePasswordSerializer, ConfirmUserEmailSerializer, \
@@ -49,6 +49,13 @@ class UserAccountUpdateView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDeleteView(generics.DestroyAPIView):
+    serializer_class = UserAccountSerializer
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated, )
+    lookup_field = 'pk'
 
 
 class ConfirmUserEmailView(APIView):
