@@ -8,9 +8,6 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         fields = ['id_book', ]
 
 
-class BookSerializer
-
-
 class OrderListSerializer(serializers.ModelSerializer):
 
     class Meta:
