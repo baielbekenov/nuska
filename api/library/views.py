@@ -43,11 +43,13 @@ class CommentListAPIView(generics.ListCreateAPIView):
 class AuthorListView(generics.ListAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+    permission_classes = (AllowAny,)
     
 
 class JenreListView(generics.ListAPIView):
     queryset = Jenre.objects.all()
     serializer_class = JenreSerializer
+    permission_classes = (AllowAny,)
 
         
 class BookListView(generics.ListAPIView):
@@ -68,6 +70,7 @@ class BookListView(generics.ListAPIView):
 class CommentListView(generics.ListAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = (AllowAny,)
     
     
 class BookDetailView(generics.RetrieveAPIView):
