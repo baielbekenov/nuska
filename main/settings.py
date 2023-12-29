@@ -213,7 +213,7 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "Nuska OpenAPI",
     "DESCRIPTION": "Описание нашего API в разработке...",
     'COMPONENT_SPLIT_REQUEST': True,
-    "VERSION": "3.0.0",
+    "VERSION": "1.0.0",
     "SCHEMA_PATH_PREFIX": r"/api/v[0-9]",
     "SERVE_PERMISSIONS": ("rest_framework.permissions.IsAdminUser",),
     "SERVE_AUTHENTICATION": ('rest_framework.authentication.SessionAuthentication',
