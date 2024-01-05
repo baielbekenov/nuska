@@ -209,13 +209,12 @@ if DEBUG:
 
 
 SPECTACULAR_SETTINGS = {
-    "openapi": "3.0.0",
     "TITLE": "Nuska OpenAPI",
     "DESCRIPTION": "Описание нашего API в разработке...",
     'COMPONENT_SPLIT_REQUEST': True,
     "VERSION": "1.0.0",
     "SCHEMA_PATH_PREFIX": r"/api/v[0-9]",
-    "SERVE_PERMISSIONS": ("rest_framework.permissions.IsAdminUser",),
+    "SERVE_PERMISSIONS": ("rest_framework.permissions.AllowAny",),
     "SERVE_AUTHENTICATION": ('rest_framework.authentication.SessionAuthentication',
                              'rest_framework.authentication.BasicAuthentication'),
     "PREPROCESSING_HOOKS": ("api.openapi.preprocessors.get_urls_preprocessor",),
