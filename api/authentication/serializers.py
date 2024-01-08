@@ -26,9 +26,6 @@ class UserRegisterSerializer(serializers.Serializer):
         model = User
         fields = ("phone", "password1", 'email', 'first_name', 'last_name')
 
-    def validate_password1(self, password1):
-        if not validate_password(password1):
-            return password1
 
 
 class UserGetSerializer(serializers.ModelSerializer):
