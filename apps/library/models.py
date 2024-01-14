@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 class Author(models.Model):
     first_name = models.CharField(max_length=30, verbose_name='Аты')
     last_name = models.CharField(max_length=30, verbose_name='Фамилиясы')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='author', verbose_name='Автору')
     
     def __str__(self):
         return self.first_name + ' ' + self.last_name

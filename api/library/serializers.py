@@ -17,13 +17,17 @@ class JenreSerializer(serializers.ModelSerializer):
         
 
 class BookSerializer(serializers.ModelSerializer):
-    prices = PostuplenieSerializer(many=True, read_only=True, source='postu_book')
+    price = serializers.SerializerMethodField()
     author = AuthorSerializer(many=True, read_only=True)
     jenre = JenreSerializer(many=True, read_only=True)
     
     class Meta:
         model = Book
-        fields = ['id', 'name', 'author', 'created_at', 'cover_image', 'jenre', 'prices', 'sales_count']
+        fields = ['id', 'name', 'author', 'created_at', 'cover_image', 'jenre', 'price', 'sales_count']
+
+    def get_price(self, obj):
+        postu = obj.postu_book.first()
+        return postu.price if postu else None
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -36,13 +40,23 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class BookDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
-    
+    author = AuthorSerializer(many=True, read_only=True)
+    jenres = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+
     class Meta:
         model = Book
-        fields = ['id','name', 'author', 'jenre', 'description', 'avatar',
+        fields = ['id', 'name', 'author', 'jenres', 'description', 'avatar',
                   'short_book_file', 'book_file', 'amount_pages',
-                  'created_at', 'sales_count',
+                  'created_at', 'sales_count', 'price',
                   'cover_image', 'comments']
+
+    def get_jenres(self, obj):
+        return obj.jenre.name if obj.name else None
+
+    def get_price(self, obj):
+        postu = obj.postu_book.first()
+        return postu.price if postu else None
 
 
 class AddFavoriteBookSerializer(serializers.Serializer):
