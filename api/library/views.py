@@ -6,10 +6,9 @@ from api.library.pagination import CommentPagination
 from apps.library.models import Author, Jenre, Book, Comment, FavoriteBook
 from api.library.serializers import AuthorSerializer, JenreSerializer, \
     BookSerializer, CommentSerializer, BookDetailSerializer, \
-    AddFavoriteBookSerializer, ListFavoriteBookSerializer
-from drf_spectacular.utils import extend_schema
+    AddFavoriteBookSerializer, ListFavoriteBookSerializer, DeleteFavouriteBookSerializer
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
-    
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 
@@ -51,7 +50,13 @@ class JenreListView(generics.ListAPIView):
     serializer_class = JenreSerializer
     permission_classes = (AllowAny,)
 
-        
+
+@extend_schema_view(
+    get=extend_schema(
+        description='',
+        summary='Фильтрация происходит в конце url ?jenre_id=13'
+    ),
+)
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -65,6 +70,16 @@ class BookListView(generics.ListAPIView):
         if jenre_id is not None:
             queryset = queryset.filter(jenre__id=jenre_id)
         return queryset
+
+
+class RecommendedBooksView(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        books = Book.objects.all().order_by('-amount_view')[:12]
+
+        serializer = BookSerializer(books, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
 class CommentListView(generics.ListAPIView):
@@ -78,6 +93,12 @@ class BookDetailView(generics.RetrieveAPIView):
     serializer_class = BookDetailSerializer
     permission_classes = (AllowAny,)
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.amount_view += 1
+        instance.save(update_fields=['amount_view'])
+        return super().retrieve(request, *args, **kwargs)
+
 
 class BestSellingBooksView(generics.ListAPIView):
     queryset = Book.objects.all().order_by('-sales_count')
@@ -86,7 +107,7 @@ class BestSellingBooksView(generics.ListAPIView):
 
 
 class NewBooksView(generics.ListAPIView):
-    queryset = Book.objects.all().order_by('-created_at')
+    queryset = Book.objects.all().order_by('-created_at')[:12]
     serializer_class = BookSerializer
     permission_classes = (AllowAny,)
 
@@ -103,8 +124,19 @@ class AddFavoriteBookView(APIView):
             favourite_book = serializer.save(user=user)
 
             favourite_book.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Тандалган китептерге ийгиликтүү кошулду"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "Сурам туура эмес жөнөтүлдү"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteFavouriteBookView(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def delete(self, request, pk):
+        deletion_book = FavoriteBook.objects.filter(user=request.user, id=pk)
+        if not deletion_book.exists():
+            return Response({"message": "Тандалгандардын арасында мындай китеп жок"}, status=status.HTTP_404_NOT_FOUND)
+        deletion_book.delete()
+        return Response({"message": "Ийгиликтүү өчүрүлдү"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class ListFavoriteBookView(generics.ListAPIView):

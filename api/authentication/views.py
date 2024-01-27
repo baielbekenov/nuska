@@ -15,7 +15,7 @@ from rest_framework.throttling import ScopedRateThrottle
 from api.authentication.utils import send_email_code_for_reset
 from apps.authentication.models import Soglashenie
 from rest_framework_simplejwt.tokens import RefreshToken
-from api.authentication.serializers import CustomTokenObtainSerializer, LogoutSerializer, UserGetSerializer, \
+from api.authentication.serializers import CustomTokenObtainSerializer, UserGetSerializer, \
     UserRegisterSerializer, PasswordResetSerializer, CodeResetPasswordSerializer, ResetPasswordConfirmSerializer, \
     UserListSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -98,20 +98,6 @@ class RegistrationAPIView(APIView):
             "message": "Колдонуучуну каттоо ийгиликтүү өттү"
         }
         return Response(data, status=status.HTTP_200_OK)
-
-        
-class LogoutAPIView(APIView):
-    serializer_class = LogoutSerializer
-
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request):
-
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ResetPasswordView(APIView):

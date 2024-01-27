@@ -48,7 +48,8 @@ class Book(models.Model):
     amount_pages = models.IntegerField(validators=[MaxValueValidator(9999)], verbose_name='барактардын саны')
     sales_count = models.IntegerField(default=0, verbose_name='Сатылгандардын саны')
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True, verbose_name='постер')
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True, verbose_name='активдүү')
+    amount_view = models.IntegerField(default=0, verbose_name='көрүүлөрдүн саны')
     
     def __str__(self):
         return self.name

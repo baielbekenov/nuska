@@ -23,7 +23,7 @@ class BookSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Book
-        fields = ['id', 'name', 'author', 'created_at', 'cover_image', 'jenre', 'price', 'sales_count']
+        fields = ['id', 'name', 'author', 'created_at', 'cover_image', 'jenre', 'price', 'sales_count', 'amount_view']
 
     def get_price(self, obj):
         postu = obj.postu_book.first()
@@ -31,12 +31,13 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user_name = serializers.CharField(source='user_id.phone', read_only=True)
+    user_name = serializers.CharField(source='user_id.first_name', read_only=True)
+
 
     class Meta:
         model = Comment
         fields = ['user_name', 'date', 'comment']
-        
+
 
 class BookDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
@@ -47,12 +48,17 @@ class BookDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ['id', 'name', 'author', 'jenres', 'description', 'avatar',
-                  'short_book_file', 'book_file', 'amount_pages',
+                  'short_book_file', 'amount_pages',
                   'created_at', 'sales_count', 'price',
                   'cover_image', 'comments']
 
     def get_jenres(self, obj):
-        return obj.jenre.name if obj.name else None
+        jenres = obj.jenre
+        return {
+            'name': jenres.name,
+        }
+
+
 
     def get_price(self, obj):
         postu = obj.postu_book.first()
@@ -69,6 +75,10 @@ class AddFavoriteBookSerializer(serializers.Serializer):
     def create(self, validated_data):
         favorite_book, created = FavoriteBook.objects.get_or_create(**validated_data)
         return favorite_book
+
+
+class DeleteFavouriteBookSerializer(serializers.Serializer):
+    book_id = serializers.IntegerField(required=True)
 
 
 class ListFavoriteBookSerializer(serializers.ModelSerializer):

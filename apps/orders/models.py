@@ -6,30 +6,48 @@ from apps.library.models import Book
 
 
 class Order(models.Model):
-    id_user = models.ForeignKey(User, on_delete=models.SET_NULL,  blank=True, null=True, verbose_name='id_user')
-    id_book = models.ForeignKey(Book, on_delete=models.SET_NULL,  blank=True, null=True, verbose_name='id_book')
-    order_date = models.DateField(verbose_name='date of order', auto_now_add=True)
-    order_status = models.BooleanField(verbose_name='status of order', default=False)
-    totall_summ = models.DecimalField(decimal_places=2, max_digits=8, null=True, blank=True)
-    status_payment = models.BooleanField(default=False)
-    
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='колдонуучу')
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='китеп')
+    order_date = models.DateField(auto_now_add=True, verbose_name='заказдын датасы')
+    order_status = models.BooleanField(default=False, verbose_name='заказдын абалы')
+    total_sum = models.DecimalField(decimal_places=2, max_digits=8, null=True, blank=True, verbose_name='жалпы суммасы')
+
     def __str__(self):
-        return f"{self.id_user} -- {self.id_book}"
-    
+        return f"{self.user} -- {self.book}"
+
     class Meta:
-        
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказдар'
+
+
+class Payment(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='payments', verbose_name='заказ')
+    amount = models.DecimalField(decimal_places=2, max_digits=8, verbose_name='сумма')
+    payment_date = models.DateTimeField(auto_now_add=True, verbose_name='төлөөм датасы')
+    status = models.CharField(max_length=30, choices=[
+        ('processing', 'Иштетүү...'),
+        ('completed', 'Аякталды'),
+        ('failed', 'Ийгиликсиз'),
+        ('refunded', 'Кайтты')
+    ], default='processing', verbose_name='төлөм абалы')
+    transaction_id = models.CharField(max_length=100, blank=True, null=True, verbose_name='транзакция ID')
+
+    def __str__(self):
+        return f"Заказ {self.id} менен төлөө {self.order.id}"
+
+    class Meta:
+        verbose_name = 'Төлөм'
+        verbose_name_plural = 'Төлөмдөр'
     
 
 class Postuplenie(models.Model):
-    id_book = models.ForeignKey(Book, on_delete=models.SET_NULL,  blank=True, null=True, related_name='postu_book')
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL,  blank=True, null=True, related_name='postu_book')
     date = models.DateField(auto_now_add=True)
     cost = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     price = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     
     def __str__(self):
-        return str(self.id_book)
+        return str(self.book)
     
     class Meta:
         

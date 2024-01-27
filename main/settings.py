@@ -16,7 +16,7 @@ from pathlib import Path
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve(). parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -52,7 +52,6 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'corsheaders',
     'drf_spectacular',
@@ -196,6 +195,8 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser'
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
@@ -241,6 +242,10 @@ SIMPLE_JWT = {
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
+
 LANGUAGE_CODE = 'ky'
 
 gettext = lambda s: s
@@ -262,7 +267,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
 # Extra places for collectstatic to find static files.
@@ -311,13 +316,13 @@ JAZZMIN_SETTINGS = {
     "site_brand": "nuska",
 
     # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": "books/img/logo.png",
+    "site_logo": "logo/nuska_logo.jpg",
 
     # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
-    "login_logo": None,
+    "login_logo": 'logo/nuska_logo.jpg',
 
     # Logo to use for login form in dark themes (defaults to login_logo)
-    "login_logo_dark": None,
+    "login_logo_dark": 'logo/nuska_logo.jpg',
 
     # CSS classes that are applied to the logo above
     "site_logo_classes": "img-circle",

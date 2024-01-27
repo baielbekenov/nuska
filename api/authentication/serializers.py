@@ -43,25 +43,6 @@ class UserGetSerializer(serializers.ModelSerializer):
         )
 
 
-class LogoutSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-    
-    default_error_messages = {
-        'bad_token': ('Токен эскирди же туура эмес')
-    }
-    
-    def validate(self, attrs):
-        self.token = attrs['refresh']
-        return attrs
-    
-    def save(self, **kwargs):
-        
-        try:
-            RefreshToken(self.token).blacklist()
-        except TokenError:
-            self.fail('bad_token')
-
-
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
 

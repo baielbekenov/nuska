@@ -1,18 +1,27 @@
 from rest_framework import serializers
-from apps.orders.models import Order, Postuplenie, PublicOffer
+from apps.orders.models import Order, Postuplenie, PublicOffer, Payment
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ['id_book', ]
-
-
-class OrderListSerializer(serializers.ModelSerializer):
+    total_sum = serializers.DecimalField(max_digits=8, decimal_places=2, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'id_user', 'id_book']
+        fields = ['book', 'total_sum']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['user', 'book', 'total_sum', 'order_date', 'order_status']
+        read_only_fields = ['user', 'order_date', 'order_status']
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ['order', 'amount', 'payment_date', 'status', 'transaction_id']
+        read_only_fields = ['payment_date', 'status', 'transaction_id']
 
 
 class PostuplenieSerializer(serializers.ModelSerializer):
