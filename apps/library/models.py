@@ -50,6 +50,7 @@ class Book(models.Model):
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True, verbose_name='постер')
     active = models.BooleanField(default=True, verbose_name='активдүү')
     amount_view = models.IntegerField(default=0, verbose_name='көрүүлөрдүн саны')
+    price = models.IntegerField(default=0, verbose_name='баасы')
     
     def __str__(self):
         return self.name

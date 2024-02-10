@@ -1,7 +1,6 @@
 from django.urls import path
 from api.account.views import UserAccountUpdateView, ChangePasswordView, ConfirmUserEmailView, \
-    ActivateEmailUserView, SendCodeAgainView, GetMeApiView, UserDeleteView
-
+    ActivateEmailUserView, SendCodeAgainView, GetMeApiView, UserDeleteView, MyBooksView
 
 urlpatterns = [
     path("user/update/", UserAccountUpdateView.as_view()),
@@ -10,5 +9,6 @@ urlpatterns = [
     path("activate/email/", ActivateEmailUserView.as_view()),
     path("send/code/again/", SendCodeAgainView.as_view()),
     path("users/me/", GetMeApiView.as_view()),
-    path('delete/account/<int:pk>/', UserDeleteView.as_view())
+    path('delete/account/<int:pk>/', UserDeleteView.as_view()),
+    path('mybooks/', MyBooksView.as_view())
 ]

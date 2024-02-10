@@ -2,43 +2,48 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
-
+from django.shortcuts import get_object_or_404
 from apps.library.models import Book
 from apps.orders.models import Order, Postuplenie, PublicOffer, Payment
-from api.orders.serializers import PostuplenieSerializer, PublicOfferSerializer, OrderSerializer, PaymentSerializer
+from api.orders.serializers import PostuplenieSerializer, PublicOfferSerializer, OrderSerializer, PaymentSerializer, \
+    OrderCreateSerializer, OrderDetailSerializer
 
 
 class PurchaseBookView(APIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = OrderSerializer
+    serializer_class = OrderCreateSerializer
 
     def post(self, request):
-        user = request.user
-        book_id = request.data.get('book_id')
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid():
+            return Response({"message": "туура эмес жооп"}, status=status.HTTP_400_BAD_REQUEST)
+        book_id = serializer.validated_data["book"]
+        book = get_object_or_404(Book, name=book_id)
 
-        try:
-            book = Book.objects.get(id=book_id)
-            postuplenie = Postuplenie.objects.filter(book=book).order_by('-date').first()
+        Order.objects.create(
+            user=request.user,
+            book=book,
+            total_sum=book.price
+        )
 
-            if not postuplenie:
-                return Response({'error': 'Цена книги не найдена'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"message": "Заказ создан"}, status.HTTP_201_CREATED)
 
-            # Создание заказа
-            order_data = {'user': user.id, 'book': book_id, 'total_sum': postuplenie.price}
-            order_serializer = OrderSerializer(data=order_data)
-            order_serializer.is_valid(raise_exception=True)
-            order = order_serializer.save()
 
-            # Создание платежа
-            payment_data = {'order': order.id, 'amount': postuplenie.price}
-            payment_serializer = PaymentSerializer(data=payment_data)
-            payment_serializer.is_valid(raise_exception=True)
-            payment_serializer.save()
+class PurchasedBookView(APIView):
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
 
-            return Response({'message': 'Книга успешно куплена'}, status=status.HTTP_201_CREATED)
-        except Book.DoesNotExist:
-            return Response({'error': 'Книга не найдена'}, status=status.HTTP_404_NOT_FOUND)
+    def get(self, request):
+        order = Order.objects.filter(user=request.user, order_status=True)
+        serializer = self.serializer_class(order, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class DetailPurchasedBookView(generics.RetrieveAPIView):
+    serializer_class = OrderDetailSerializer
+    queryset = Order.objects.all()
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'pk'
 
 
 class PostuplenieListView(generics.ListAPIView):

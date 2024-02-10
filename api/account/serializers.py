@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from django.contrib.auth import password_validation
 
+from apps.library.models import Book
+
 User = get_user_model()
 
 
@@ -46,3 +48,10 @@ class ChangePasswordSerializer(serializers.Serializer):
         user = self.context['request'].user
         user.set_password(self.validated_data['new_password'])
         user.save()
+
+
+class BookSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Book
+        fields = ['id', 'name', 'cover_image']

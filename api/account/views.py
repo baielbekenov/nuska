@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -5,13 +6,14 @@ from rest_framework import status, generics
 from django.contrib.auth import get_user_model
 from django.utils.http import urlsafe_base64_encode
 from api.account.serializers import UserAccountSerializer, ChangePasswordSerializer, ConfirmUserEmailSerializer, \
-    ActivateUserEmailSerializer
+    ActivateUserEmailSerializer, BookSerializer
 import datetime
 import random
 from django.utils.encoding import force_bytes
 from django.utils.translation import gettext as _
 from api.account.utils import send_code_email_confirm
 from api.authentication.serializers import UserGetSerializer
+from apps.library.models import Book, Author
 
 User = get_user_model()
 
@@ -148,3 +150,15 @@ class GetMeApiView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class MyBooksView(APIView):
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        author = get_object_or_404(Author, author=request.user)
+        book = Book.objects.filter(author=author)
+
+        serializer = self.serializer_class(book, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)

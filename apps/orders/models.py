@@ -1,6 +1,8 @@
 from django.db import models
 from apps.authentication.models import User
 from apps.library.models import Book
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -41,13 +43,21 @@ class Payment(models.Model):
     
 
 class Postuplenie(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.SET_NULL,  blank=True, null=True, related_name='postu_book')
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL,  blank=True, null=True,
+                             related_name='postu_book', )
     date = models.DateField(auto_now_add=True)
     cost = models.DecimalField(decimal_places=2, max_digits=8, default=0)
     price = models.DecimalField(decimal_places=2, max_digits=8, default=0)
+    created_date = models.DateField(auto_now_add=True)
     
     def __str__(self):
         return str(self.book)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.book:
+            self.book.price = self.price
+            self.book.save()
     
     class Meta:
         
