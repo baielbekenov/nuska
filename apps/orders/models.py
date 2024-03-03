@@ -78,3 +78,15 @@ class PublicOffer(models.Model):
         verbose_name_plural = 'Публичные предложения'
 
 
+class Banner(models.Model):
+    title = models.CharField(max_length=50, verbose_name='Аталыш')
+    image = models.ImageField(upload_to='banners/', verbose_name='Баннер')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Баннер'
+        verbose_name_plural = 'Баннерлер'
+
+

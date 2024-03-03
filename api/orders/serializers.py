@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
-from apps.orders.models import Order, Postuplenie, PublicOffer, Payment
+from apps.orders.models import Order, Postuplenie, PublicOffer, Payment, Banner
 from apps.library.models import Book, Jenre, Author
 
 
@@ -86,6 +86,13 @@ class PublicOfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = PublicOffer
         fields = ['id', 'title', 'content', 'is_active']
+
+
+class BannerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Banner
+        fields = '__all__'
 
         
         

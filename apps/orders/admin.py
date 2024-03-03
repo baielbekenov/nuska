@@ -1,10 +1,11 @@
 from django.contrib import admin
-from apps.orders.models import Order, Postuplenie, PublicOffer, Payment
+from apps.orders.models import Order, Postuplenie, PublicOffer, Payment, Banner
 
 # Register your models here.
 
 admin.site.register(PublicOffer)
 admin.site.register(Payment)
+admin.site.register(Banner)
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

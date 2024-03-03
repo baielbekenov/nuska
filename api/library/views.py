@@ -78,7 +78,7 @@ class RecommendedBooksView(APIView):
     def get(self, request):
         books = Book.objects.all().order_by('-amount_view')[:12]
 
-        serializer = BookSerializer(books, many=True)
+        serializer = BookSerializer(books, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 

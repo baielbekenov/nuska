@@ -4,9 +4,9 @@ from rest_framework import status, generics
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from django.shortcuts import get_object_or_404
 from apps.library.models import Book
-from apps.orders.models import Order, Postuplenie, PublicOffer, Payment
+from apps.orders.models import Order, Postuplenie, PublicOffer, Payment, Banner
 from api.orders.serializers import PostuplenieSerializer, PublicOfferSerializer, OrderSerializer, PaymentSerializer, \
-    OrderCreateSerializer, OrderDetailSerializer
+    OrderCreateSerializer, OrderDetailSerializer, BannerSerializer
 
 
 class PurchaseBookView(APIView):
@@ -55,5 +55,12 @@ class PublicOfferView(generics.ListAPIView):
     queryset = PublicOffer.objects.all()
     serializer_class = PublicOfferSerializer
     permission_classes = (AllowAny,)
+
+
+class BannerView(generics.ListAPIView):
+    queryset = Banner.objects.all()
+    serializer_class = BannerSerializer
+    permission_classes = (AllowAny, )
+
     
 

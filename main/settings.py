@@ -153,14 +153,21 @@ AUTH_USER_MODEL = 'authentication.User'
 # }
 
 # for deploy
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'nuska2',
+#         'USER': 'nuska2user',
+#         'PASSWORD': 'nuska2_pass',
+#         'HOST': '127.0.0.1',
+#         'PORT': ''
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nuska2',
-        'USER': 'nuska2user',
-        'PASSWORD': 'nuska2_pass',
-        'HOST': '127.0.0.1',
-        'PORT': ''
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
