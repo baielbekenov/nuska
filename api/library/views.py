@@ -136,7 +136,10 @@ class DeleteFavouriteBookView(APIView):
         if not deletion_book.exists():
             return Response({"message": "Тандалгандардын арасында мындай китеп жок"}, status=status.HTTP_404_NOT_FOUND)
         deletion_book.delete()
-        return Response({"message": "Ийгиликтүү өчүрүлдү"}, status=status.HTTP_204_NO_CONTENT)
+        data = {
+            "message": "Ийгиликтүү өчүрүлдү"
+        }
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class ListFavoriteBookView(generics.ListAPIView):
