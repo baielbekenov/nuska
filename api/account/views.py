@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -55,10 +56,21 @@ class UserAccountUpdateView(APIView):
 
 class UserDeleteView(generics.DestroyAPIView):
     serializer_class = UserAccountSerializer
-    queryset = User.objects.all()
-    permission_classes = (IsAuthenticated, )
-    lookup_field = 'pk'
+    permission_classes = (IsAuthenticated,)
 
+    def get_object(self):
+        user = self.request.user
+        if user.is_authenticated:
+            return user
+        raise PermissionDenied("Для выполнения этого действия необходимо войти в систему.")
+
+    def destroy(self, request, *args, **kwargs):
+        user = self.get_object()
+        if user == request.user:
+            user.delete()
+            return Response({"message": "Учетная запись успешно удалена"}, status=status.HTTP_200_OK)
+        else:
+            raise PermissionDenied("Вы можете удалять только свою учетную запись.")
 
 class ConfirmUserEmailView(APIView):
     serializer_class = ConfirmUserEmailSerializer

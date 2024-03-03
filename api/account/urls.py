@@ -9,6 +9,6 @@ urlpatterns = [
     path("activate/email/", ActivateEmailUserView.as_view()),
     path("send/code/again/", SendCodeAgainView.as_view()),
     path("users/me/", GetMeApiView.as_view()),
-    path('delete/account/<int:pk>/', UserDeleteView.as_view()),
+    path('delete/account/', UserDeleteView.as_view()),
     path('mybooks/', MyBooksView.as_view())
 ]

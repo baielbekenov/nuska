@@ -49,7 +49,7 @@ class BookDetailSerializer(serializers.ModelSerializer):
         model = Book
         fields = ['id', 'name', 'author', 'jenres', 'description', 'avatar',
                   'short_book_file', 'amount_pages',
-                  'ig_account', 'phone_number', 'addres'
+                  'ig_account', 'phone_number', 'addres',
                   'created_at', 'sales_count', 'price',
                   'cover_image', 'comments']
 
