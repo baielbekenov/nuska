@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 class Author(models.Model):
     first_name = models.CharField(max_length=30, verbose_name='Аты')
     last_name = models.CharField(max_length=30, verbose_name='Фамилиясы')
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='author', verbose_name='Автору')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='author', verbose_name='Автору')
     
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -51,6 +51,9 @@ class Book(models.Model):
     active = models.BooleanField(default=True, verbose_name='активдүү')
     amount_view = models.IntegerField(default=0, verbose_name='көрүүлөрдүн саны')
     price = models.IntegerField(default=0, verbose_name='баасы')
+    addres = models.CharField(max_length=90, verbose_name='дарек', blank=True, null=True)
+    phone_number = models.IntegerField(max_length=10, verbose_name='телефон номуру', blank=True, null=True)
+    ig_account = models.CharField(max_length=150, verbose_name='соц аккаунт', blank=True, null=True)
     
     def __str__(self):
         return self.name
