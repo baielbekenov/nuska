@@ -67,9 +67,9 @@ class CodeResetPasswordSerializer(serializers.Serializer):
 class ResetPasswordConfirmSerializer(serializers.Serializer):
     new_password = serializers.CharField(required=True)
     
-    def validate_new_password(self, new_password):
-        if not validate_password(new_password):
-            return new_password
+    # def validate_new_password(self, new_password):
+    #     if not validate_password(new_password):
+    #         return new_password
 
 
 class UserListSerializer(serializers.ModelSerializer):
